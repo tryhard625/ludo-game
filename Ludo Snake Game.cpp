@@ -2,7 +2,6 @@
 #include<conio.h>
 #include<stdlib.h>
 #include<time.h>
-#include<windows.h>
 char square[101];
 char square2[101];
 struct Location
@@ -17,12 +16,10 @@ int checkWin(int);
 int random();
 void shapes(int);
 void play();
-void intro();
 
 int main()
 {
 	int player=1,dice,move[6],finish,i,j=0,jump;
-	intro();
 	gameBoard();
 	do
 	{
@@ -40,8 +37,6 @@ int main()
 		move[j]=dice;
 		j++;
 	}while(dice==6);
-	
-	Sleep(300);
 		if(player==1)
 		{
 			for(i=0;i<j;i++){
@@ -200,45 +195,6 @@ void shapes(int a)
 	printf("\n\t\t\t  *********\n\t\t\t*           *\n\t\t\t*  O  O  O  *\n\t\t\t*   O   O   *\n\t\t\t*           *\n\t\t\t  *********");
 	else
 	printf("\n\t\t\t  *********\n\t\t\t*           *\n\t\t\t*  O  O  O  *\n\t\t\t*  O  O  O  *\n\t\t\t*           *\n\t\t\t  *********");
-}
-
-void intro()
-{
-	printf("\t\t\t*\n\t\t\t*\n\t\t\t*\n\t\t\t*\n\t\t\t*\n \t\t\t*******");
-	Beep(600,400); 
-	Sleep(500);
-	system("cls");
-	printf("\t\t\t\n\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t ******");//u
-	Beep(500,400); 
-	Sleep(500);
-	system("cls");
-	printf("\n\n\t\t\t*******\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t*******");//d
-	Beep(400,400); 
-	Sleep(500);
-	system("cls");
-	printf("\n\n\t\t\t ******\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t*      *\n\t\t\t ******");//o
-	Beep(300,400); 
-	system("cls");
-	Sleep(500);
-	
-	printf("\n\n\n\n\t\t*       *     *  *****    *****      *****  *   *      **         **   *****  ***  ******\n");
-	Sleep(100);
-	printf("\t\t*       *     *  *    *  *     *     *    *  * *       * *       * *  *     *  *       * \n");
-	Sleep(100);
-	printf("\t\t*       *     *  *    *  *     *     *****    *        *  *     *  *  *     *  *      *  \n");
-	Sleep(100);
-	printf("\t\t*       *     *  *    *  *     *     *    *   *        *   *   *   *  *     *  *     *   \n");
-	Sleep(100);
-	printf("\t\t*       *     *  *    *  *     *     *    *   *        *    * *    *  *     *  *    *    \n");
-	Sleep(100);
-	printf("\t\t *****   *****   *****    *****      *****    *        *     *     *   *****  ***  ******\n");
-	Sleep(100);
-	Beep(600,250); 
-	Beep(500,250); 
-	Beep(400,250); 
-	Beep(300,250);
-	Sleep(1500);
-	
 }
 void gameBoard()
 {
