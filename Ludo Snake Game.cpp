@@ -1,25 +1,32 @@
 #include<stdio.h>
-#include<conio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<windows.h>
 char square[101];
 char square2[101];
+char player1_name[20];
+char player2_name[20];
+char winner[20];
 struct Location
 {
 	int previous;
 	int current,count;
 }player1={1,1,0},player2={1,1,0};
-
+void entry();
 void gameBoard();
 int Obstacles(int);
 int checkWin(int);
 int random();
 void shapes(int);
 void play();
+void intro();
+void record(int);
 
 int main()
 {
 	int player=1,dice,move[6],finish,i,j=0,jump;
+	intro();
+	entry();
 	gameBoard();
 	do
 	{
@@ -27,7 +34,10 @@ int main()
 		player=2;
 	else
 		player=1;
-	printf("\n\t\t\tPlayer %d Turn: ",player);
+	if(player==1)
+	printf("\n\t\t\t%s's Turn: ",player1_name);
+	else
+	printf("\n\t\t\t%s's Turn: ",player2_name);
 	printf("\n\t\t\t('X' to roll the dice) ");
 	do{
 		play();
@@ -37,6 +47,8 @@ int main()
 		move[j]=dice;
 		j++;
 	}while(dice==6);
+	
+	Sleep(300);
 		if(player==1)
 		{
 			for(i=0;i<j;i++){
@@ -44,6 +56,11 @@ int main()
 				jump=player1.count;
 				player1.count=Obstacles(player1.count);
 				finish=(checkWin(player1.count));
+				if(finish==2)
+				{
+					player1.count-=move[i];
+					break;
+				}
 				do
 				{
 					if(player1.current==jump)
@@ -67,6 +84,11 @@ int main()
 				jump=player2.count;
 				player2.count=Obstacles(player2.count);
 				finish=(checkWin(player2.count));
+				if(finish==2)
+				{
+					player2.count-=move[i];
+					break;
+				}
 				
 				do
 				{
@@ -86,8 +108,61 @@ int main()
 	gameBoard();
 	player++;
 	j=0;
-	}while(finish==1);
-	printf("\n\t\t\tPlayer %d Won!",--player);
+	}while(finish==1 || finish==2);
+	player--;
+	if(player==1)
+	{
+	printf("\n\t\t\t%s WON!",player1_name);
+	for(i=0;i<strlen(player1_name);i++)
+	winner[i]=player1_name[i];
+	}
+	else
+	{
+	printf("\n\t\t\t%s WON!: ",player2_name);
+	for(i=0;i<strlen(player2_name);i++)
+	winner[i]=player2_name[i];
+	}
+	record(2);
+}
+
+void entry(){
+	system("cls");
+	printf("\n\n\t\t\tPLAYER 1 NAME: ");
+	fflush(stdin);
+	gets(player1_name);
+	printf("\t\t\tPLAYER 2 NAME: ");
+	fflush(stdin);
+	gets(player2_name);
+}
+void record(int a){
+	char read[250],ch;
+	FILE *fptr;
+	time_t t;
+    time(&t);
+	switch(a){
+		case 1:
+			fptr=fopen("Record.txt","r");
+			if(fptr==NULL){
+				printf("\t\t\tNO RECORD FOUND!");
+				exit(1);
+			}
+			system("cls");
+			printf("\n<-- RECORD -->\n");
+			while((ch = fgetc(fptr)) != EOF)
+    	 	printf("%c", ch);
+			fclose(fptr);
+			printf("\n\npress any key to go back to main menu...");
+			getch();
+			intro();
+			break;
+		case 2:
+			fptr=fopen("Record.txt","a");
+			fprintf(fptr,"\n%s  vs  %s\t%s WIN\t%s",player1_name,player2_name,winner,ctime(&t));
+			fclose(fptr);
+			break;
+			
+			
+	}
 }
 
 int random()
@@ -101,8 +176,10 @@ int random()
 
 int checkWin(int a)
 {
-	if(a>100)
+	if(a==101)
 	return -1;
+	else if (a>101)
+	return 2;
 	else
 	return 1;
 }
@@ -196,6 +273,39 @@ void shapes(int a)
 	else
 	printf("\n\t\t\t  *********\n\t\t\t*           *\n\t\t\t*  O  O  O  *\n\t\t\t*  O  O  O  *\n\t\t\t*           *\n\t\t\t  *********");
 }
+
+void intro()
+{
+	system("cls");
+	int choice;
+	printf("\n\t\t\t************************");
+	printf("\n\t\t\t*                      *");
+	printf("\n\t\t\t*                      *");
+	printf("\n\t\t\t*                      *");
+	printf("\n\t\t\t*   PLAY GAME   [1]    *");
+	printf("\n\t\t\t*   RECORD      [2]    *");
+	printf("\n\t\t\t*                      *");
+	printf("\n\t\t\t*                      *");
+	printf("\n\t\t\t*                      *");
+	printf("\n\t\t\t************************\n\t\t\t");
+	scanf("%d",&choice);
+	if(choice==1)
+	return;
+	else if(choice==2)
+	record(1);
+	else
+	{
+	
+		printf("\n\t\t\tINVALID CHOICE\n\t\t\tTry Again in  ");
+		for(choice=3;choice>=1;choice--)
+		{
+			printf("..%d",choice);
+			Sleep(1000);
+		}
+		intro();
+	}
+	
+}
 void gameBoard()
 {
 	system("cls");
@@ -231,5 +341,3 @@ void gameBoard()
 	printf("\t\t\t|  %c%c   |   %c%c  |   %c%c  |   %c%c  |   %c%c  |   %c%c  |   %c%c  |   %c%c  |   %c%c  |   %c%c  |\n",square[1],square2[1],square[2],square2[2],square[3],square2[3],square[4],square2[4],square[5],square2[5],square[6],square2[6],square[7],square2[7],square[8],square2[8],square[9],square2[9],square[10],square2[10]);
 	printf("\t\t\t|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|\n");
 }
-
-
