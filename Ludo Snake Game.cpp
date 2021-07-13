@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
-#include<windows.h>
+#include<string.h>
 char square[101];
 char square2[101];
 char player1_name[20];
@@ -47,8 +47,6 @@ int main()
 		move[j]=dice;
 		j++;
 	}while(dice==6);
-	
-	Sleep(300);
 		if(player==1)
 		{
 			for(i=0;i<j;i++){
@@ -89,7 +87,6 @@ int main()
 					player2.count-=move[i];
 					break;
 				}
-				
 				do
 				{
 					if(player2.current==jump)
@@ -105,7 +102,6 @@ int main()
 				}while(move[i]>0);
  	}
  }
-	gameBoard();
 	player++;
 	j=0;
 	}while(finish==1 || finish==2);
